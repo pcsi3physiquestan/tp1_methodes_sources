@@ -1,0 +1,12 @@
+# In _toc.yml
+- file: tp1_methodes
+  numbered: true
+
+- part: Mesure unique
+  chapters:
+  - file: notebook/exo_protocole
+  - file: notebook/exo_estimation
+- part: Mesures multiples
+  chapters:
+  - file: notebook/exo_graphique
+  - file: notebook/exo_comparaison
