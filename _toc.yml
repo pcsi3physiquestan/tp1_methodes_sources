@@ -10,3 +10,6 @@
   chapters:
   - file: notebook/exo_graphique
   - file: notebook/exo_comparaison
+- part: Automatisation des mesures
+  chapters:
+  - file: notebook/exo_arduino

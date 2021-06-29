@@ -14,6 +14,7 @@ kernelspec:
   name: python3
 ---
 
+La page ci-présente existe en version notebook téléchargeable grâce au bouton ![Bouton](./images/bouton_tl.png) (choisir le format `.ipynb`). On rappelle qu'l faut ensuite l'enregistrer dans un répertoire adéquat sur votre ordinateur (`tp1` par exemple dans votre répertoire personnel) puis lancer Jupyter Notebook depuis Anaconda pour accéder au notebook, le modifier et exécutez les cellules de code adéquates.
 
 +++
 
@@ -32,7 +33,7 @@ Le protocole à réaliser est affichable en cliquant sur la croix à droite.
 ```{toggle}
 1. Réaliser le montage en n'oubliant pas d'alimenter l'émetteur et de le régler et en branchant les deux récepteurs sur la console FOXY.
 2. Préparer l'acquisition (_Conseil : décocher l'option "Fermer au lancement de l'acquisition" pour garder cette fenere de réglage durant le TP_):
-    * Choisir les voies à acquérir (_icone rouge et noir à droite du graphique_)
+    * Choisir les voies à acquérir (_icone rouge et noir à droite du mini-graphique_)
         1. Les placer (glisser-déplacer) sur l'axe des ordonnées du petit graphique.
         2. Les nommer clairement (onglet `Grandeur` sous le petit graphique)
         3. Choisir le calibre de chaque voie (le signal ne dépassera pas 10V).

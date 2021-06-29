@@ -25,3 +25,7 @@ Cette partie est entièrement libre. Vous allez utiliser la cellule suivante pou
 * Comparer la valeur estimée aux attentes.
 
 Pensez à utiliser [l'exemple complet](https://pcsi3physiquestan.github.io/tp_incertitude/notebook/exemple.html) pour écrire le code adéquat.
+
+```{code-cell}
+
+```
