@@ -19,7 +19,7 @@ La page ci-présente existe en version notebook téléchargeable grâce au bouto
 
 +++
 
-# (TP) Application au tracé graphique
+# (TP) Application au tracé graphique (1h)
 
 +++
 
@@ -107,7 +107,7 @@ Ecrire alors le compte-rendu de votre analyse.
 ### Travail à faire
 Cette partie va nous amener à estimer la célérité pour chaque couple de mesure. On réalisera ensuite la moyenne des mesures.
 
-Dans cette partie, le script :
+Dans cette partie, le script (les partiesà modifier sont clairement explicitées mais il est important de comprendre le reste du code pour être capable de l'écrire soi-même) :
 1. réalise pour chaque jeu de données une simulation de Monte-Carlo pour estimer la célérité et son incertitude.
     * On simule N = 100000 fois pour chaque jeu de données. Une explication (à comprendre et retenir) sur la méthode est donnée dans le script.
     * Nous sommes dans le cas où on ne connaît pas la distribution associées aux données de vos camarades. On supposera que les distributions pour $\Delta t$ et $d$ sont __gaussiennes__.
@@ -119,14 +119,14 @@ $$ u(C) = \frac{\sigma(echantillons)}{\sqrt{N}}$$
 
 où $\sigma(echantillons)$ est l'écart-type du vecteur échantillons.
 
-3. Représenter sur un graphique chaque valeur de c pour chaque jeu de données avec une barre d'incertitude et la moyenne calculée.
-	  * Mettre le numéro des binômes en abscisses (pas d'incertitude là dessus !)
-    * Représentez la moyenne par une droite donc par deux points $[0, c_{mes}], [k+1, {c_mes}]$. A vous de voir comment l'implémenter.
-    * (Facultatif : Pour aller plus loin) Ajoutez deux droites à $c_{mes} - u(c)$ et $c_{mes} + u(c)$ en pointillés
-4. Représenter sur un autre graphique les écarts normalisés à la moyenne des mesures pour vérifier la cohérence des mesures entre elles.
+3. représente sur un graphique chaque valeur de c pour chaque jeu de données avec une barre d'incertitude et la moyenne calculée.
+	  * le numéro des binômes en abscisses (pas d'incertitude là dessus !)
+    * la moyenne par une droite donc par deux points $[0, c_{mes}], [k+1, {c_mes}]$. A vous de voir comment l'implémenter.
+4. représente sur un autre graphique les écarts normalisés à la moyenne des mesures pour vérifier la cohérence des mesures entre elles.
 
 ```{code-cell}
-"""A vous de coder. On importe pour vous la bibliothèque random 
+""" PARTIE DEJA ECRITE"""
+"""On importe pour vous la bibliothèque random 
 et la bibliothèque matplotlib.pyplot
 """
 import numpy.random as rd
@@ -146,15 +146,20 @@ dt_sim = rd.normal(dt, udt, (N, k))
 """
 Calcul des c et de pour chaque binomes : moyenne de chaque colonne.
 La fonction np.mean possède une option np.mean(..., axis=0) qui permet justement de faire des moyennes que par colonnes.
-Note : np.mean(..., axis=1) fait des moyennes par lignes.
 
 Même principe pour l'écart-type avec l'utilisation de l'option axis=0
 """
 c_binomes = d_sim / dt_sim  # Calcul de c pour chaque échantillons et chaque binomes de TP.
 c_sim = np.mean(c_binomes, axis = 0)  # Moyenne par colonne : on a la célérité de chaque binôme.
 uc_sim = np.std(c_binomes, ddof=1, axis=0)  # Ecart-type par colonne :on a l'incertitude de chaque binôme.
+""" FIN DE LA PARTIE ECRITE
+---------------------------------------------------------------------------------------
+"""
+
 
 """
+---------------------------------------------------------------------------------------
+A VOUS DE CODER
 C'est à vous maintenant de :
 - calculer la moyenne des célérités de chaque binomes
 - calculer l'incertitude-type sur la célérité au moyen de la formule donnée dans l'énoncé.
@@ -166,16 +171,19 @@ uc0 = 0  # A modifier
 "Calcul des écarts normalisés à la moyenne pour chaque binomes"
 en_binomes = 0  # A modifier
 
+"""
+FIN DE LA PARTIE A MODIFIER
+---------------------------------------------------------------------------------------
+"""
 
-
-"""Tracé graphique
+"""
+---------------------------------------------------------------------------------------
+Tracé graphique
 On montre comment tracer les valeurs de célérité avec leurs incertitude et les écarts normalisés dans la même fenêtre.
 
-Seule nouveauté, le tracé de la valeur moyenne. Voici l'instruction à placer (ax représente les axes):
-ax.plot([0, k+1], [c_mes, c_mes], color='red', label="Moyenne des mesures")
-où c_mes est la variable contenant la valeur de la célérité estimée par moyenne.
-
-Modifier les lignes quand c'est nécessaire.
+Seule nouveauté, le tracé de la valeur moyenne. Voici l'instruction (ax représente les axes):
+ax.plot([0, k+1], [c0, c0], color='red', label="Moyenne des mesures")
+où c0 est la variable contenant la valeur de la célérité estimée par moyenne.
 """
 f, ax = plt.subplots(1, 2, figsize=(9, 6))  # Fenêtre graphique avec deux zones de tracé.
 f.suptitle('')  # Donner un titre au graphique
@@ -185,20 +193,31 @@ ax[0].set_xlabel('Binôme')
 ax[0].set_ylabel('Célérité(m/s)')
 
 ax[0].errorbar(np.arange(k), c_sim, yerr=uc_sim, label="Valeurs estimées", marker='+', linestyle='', color='red')
+ax[0].plot([0, k+1], [c0, c0], color='red', label="Moyenne des mesures")
 ax[0].legend()
 
 """Tracé des écarts normalisés"""
 
-"""Pensez à afficher la légende"""
+
 ax[1].set_xlabel('Binôme')
 ax[1].set_ylabel('EN')
 
-ax[1].plot(en_binomes, label="Ecarts normalisés", marker='+', linestyle='', color='blue')
+ax[1].plot(en_binomes, label="Ecarts normalisés", marker='+', linestyle='', color='blue') 
 ax[1].legend()
 
 plt.show()
+"""
+FIN DU TRACE GRAPHIQUE
+---------------------------------------------------------------------------------------
+"""
 
-"""Calcul de l'écart normalisé entre c0 et la valeur données dans la littérature"""
+
+
+"""
+---------------------------------------------------------------------------------------
+A VOUS DE CODER
+Calcul de l'écart normalisé entre c0 et la valeur données dans la littérature
+"""
 en_c = 0 # A modifier
 print(en_c)
 

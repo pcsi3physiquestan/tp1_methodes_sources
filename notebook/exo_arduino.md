@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Célérité du son dans l'air - Réalisation de l'expérience
+# Utilisation d'un microcontrolleur (1h)
 ## Obtention des données expérimentales
 ### Principe et protocole
 On désire mesurer la célérité du son dans l'air un grand nombre de fois. On va pour cela utiliser un émetteur récepteur ultrasons et une carte Arduino. 
@@ -37,11 +37,17 @@ La carte Arduino sera programmée pour renvoyer N mesures du temps de vol (N est
 5. Exécuter le programme. Entrer un nom de fichier clair (éviter les espaces) et choisir 1000 échantillons.
 
 ## Traitement des données.
-Créer un fichier de script dans pyzo pour :
+Utiliser la cellules ci-dessous pour :
 
 1. Importer les données dans un vecteur. Utiliser le code expliqué [ici](https://pcsi3physiquestan.github.io/intro_python/notebook/import_file.html)
 2. Tracer l'histogramme des mesures et vérifier qu'il n'y a pas visuellement de mesures aberrantes.
 3. Si c'est le cas, supprimer les données aberrantes en appliquant le processus de sélection présenté [ici](https://pcsi3physiquestan.github.io/intro_python_td/notebook/exo_science_2.html#celerite-des-ultrasons).
 4. Déterminer alors la célérité associée à chaque temps de vol puis la célérité moyenne et son écart-type. Comparer cette valeur à la valeur attendue.
 
+```{code-cell}
+"""
+N'oubliez pas d'importer les bibliothèques utiles.
+"""
 
+
+```

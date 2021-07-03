@@ -40,6 +40,7 @@ L'[emetteur ultrason](emetteur) est un boitier créant lui même le signal élec
 Emetteur ultrasons
 ```
 
+(carac_ultrason)=
 Les réglages possibles sont :
 * Une molette permet d'ajuster la __fréquence__ (autour de 40kHz) : La cellule piézo-électrique est un filtre passe-bande, il y a donc une fréquence pour laquelle l'émission sera maximale. Cette molette permet de la régler (placer un récepteur juste devant l'émetteur et ajuster la fréquence jusqu'à ce que le signal reçu soit maximal).
 * Passage en émission continu ou par salve. Il existe deux types de salves :
@@ -60,6 +61,7 @@ __Après__ avoir réfléchi au protocole, vous pouvez afficher une proposition d
 __But__ : On veut déterminer la célérité des ultrasons dans l'air.
 
 __Principe__ : La célérité $c$ du son permet de relier la distance $d$ parcourue par l'onde au temps de parcours $\Delta t$ :
+
 $$c = \frac{d}{\Delta t}$$
 
 __Mode opératoire__ : 
@@ -74,6 +76,10 @@ __Mode opératoire__ :
 __Remarques:__
 
 * L'utilisation d'un schéma du montage est indispensable à chaque protocole.
+```
+
+```{margin}
+On réfléchira à la raison d'utiliser le temps entre deux récepteurs et non entre l'émetteur et un récepteur.
 ```
 
 +++
@@ -93,8 +99,8 @@ Pour mesurer la célérité du son, on doit, dans le protocole choisi mesurer le
 En réalité, on va mesurer directement :
 * La position $d_1$. Elle sera repérée sur le réglet.
 * La position $d_2$. Elle sera repérée sur le réglet.
-* Le temps du maximum du signal émis $t_1$. Il sera lu graphiquement sur le tracé temporel du signal (logiciel sur ordinateur).
-* Le temps du maximum du signal émis $t_2$. Il sera lu graphiquement sur le tracé temporel du signal (logiciel sur ordinateur).
+* Le temps du maximum du signal reçu $t_1$. Il sera lu graphiquement sur le tracé temporel du signal (logiciel sur ordinateur).
+* Le temps du maximum du signal reçu $t_2$. Il sera lu graphiquement sur le tracé temporel du signal (logiciel sur ordinateur).
 
 Cette phase de réflexion est importante car on confond souvent les grandeurs qu'on veut avoir et les grandeurs qu'on mesure directement. De plus, c'est sur CES grandeurs qu'on va faire un bilan des sources d'incertitudes.
 ```

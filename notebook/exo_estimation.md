@@ -18,7 +18,7 @@ La page ci-présente existe en version notebook téléchargeable grâce au bouto
 
 +++
 
-# (TP) Application à l'étude des ultrasons.
+# (TP) Application à l'étude des ultrasons. (1h)
 On reprend l'étude de la propagation des ultrasons. Le but est de déterminer la célérité du son dans l'air. 
 Le protocole réalisé et le matériel utilisé est celui proposé dans l'[exercice que vous avez fait précédemment](exo_protocole).
 
@@ -30,24 +30,31 @@ Cette partie sera réalisée en TP. Lisez-là pour savoir ce que vous devrez fai
 ### Mise en place
 Le protocole à réaliser est affichable en cliquant sur la croix à droite.
 
-```{toggle}
+````{toggle}
+```{figure} ./images/atelierscientifique_v2.png
+:name: at_scient
+:align: center
+Titre
+```
 1. Réaliser le montage en n'oubliant pas d'alimenter l'émetteur et de le régler et en branchant les deux récepteurs sur la console FOXY.
-2. Préparer l'acquisition (_Conseil : décocher l'option "Fermer au lancement de l'acquisition" pour garder cette fenere de réglage durant le TP_):
-    * Choisir les voies à acquérir (_icone rouge et noir à droite du mini-graphique_)
+2. __Brancher un connecteur BNC-fil simple entre l'émetteur et FOXY.__ Ce signal est le signal alimentant l'émetteur (_pas le signal émis_). Il servira à synchroniser l'affichage.
+2. Brancher la console FOXY à l'ordinateur. Une "tablette" simulée s'ouvre. __Choisir généraliste.__
+3. Préparer l'acquisition (`Affichage > Acquisition` _Conseil : décocher l'option "Fermer au lancement de l'acquisition" pour garder cette fenêtre de réglage durant le TP_):
+    * Choisir les voies à acquérir (_icone rouge et noir à droite du [mini-graphique](at_scient)_)
         1. Les placer (glisser-déplacer) sur l'axe des ordonnées du petit graphique.
-        2. Les nommer clairement (onglet `Grandeur` sous le petit graphique)
+        2. Les nommer clairement (onglet `Grandeur` sous le petit graphique quand vous sélectionner la voie choisie)
         3. Choisir le calibre de chaque voie (le signal ne dépassera pas 10V).
     * Régler la base de temps de l'acquisition
-        1. Choisir d'acquérir en fonction du temps (Horloge à placer sur l'axe des abscisses)
-        2. Régler la durée d'acquisition (dans `Fonction du temps`) en cohérence avec la manipulation (Comment choisir ce temps ?)
+        1. Choisir d'acquérir en fonction du temps ([Horloge](at_scient) à placer sur l'axe des abscisses)
+        2. Régler la durée d'acquisition (dans `Fonction du temps` quand vous sélectionnez l'horloge) en cohérence avec la manipulation ([Comment choisir ce temps ?](carac_ultrason))
         3. Régler le nombre de points à 10000 (on apprendra plus tard à réfléchir à ce choix).
         4. Cocher `Acquisition continue` de manière à ne pas avoir besoin de relancer l'acquisition à chaque fois.
     * Régler la synchronisation : il faut choisir à quelle valeur démarrera l'affichage des signaux pour observer un signal stable.
-        1. Dans `Synchronisation` choisir la `Voie de synchro` correspondant au signal réçu par Récepteur 1.
+        1. Dans l'onglet (Menus de l'horloge) `Synchronisation` choisir la `Voie de synchro` correspondant au signal de l'émetteur.
         2. Choisir une `Niveau` de 1(V) `Croissant`.
     * Vous pouvez maintenant lancer l'acquisition !
 
-```
+````
 
 ### Réalisation des mesures - Bilan des incertitudes
 
@@ -162,7 +169,7 @@ Les lignes ci-dessous vous donneront les résultats des estimations des incertit
 ATTENTION : Les chiffres significatifs ne sont pas bons.
 """
 print("t1 = ", t1_m)
-print("t2) = ", t2_m)
+print("t2 = ", t2_m)
 print("d1 = ", d1_m)
 print("d2 = ", d2_m)
 print("u(t1) = ", t1_u)
@@ -172,14 +179,16 @@ print("u(d2) = ", d2_u)
 
 
 """Tracé graphique
-Le squelette des instructions est donné. Vous verrez ainsi comment tracer 4 graphiques
+Les instructions sont données. Vous verrez ainsi comment tracer 4 graphiques 
 dans une même fenêtre.
+A FAIRE : Pensez à changer l'unité des valeurs (légende de l'axe des abscisses suivant vos mesures).
 """
+
 f, axs = plt.subplots(2, 2, figsize=(9,6), dpi=100)  # Création d'une fenêtre graphique avec 4 axes répartis sur 2 colonnes et 2 lignes.
 f.suptitle("Distribution des mesurandes directs")  # Titre global
 """
-axs est une liste contenant les 4 axes (=graphiques)
-Pensez à changer l'unité des valeurs (légende de l'axe des abscisses suivant vos mesures).
+axs est un tableau contenant les 4 axes (=graphiques)
+
 """
 nbins = 100  # Nombres de bâtons
 

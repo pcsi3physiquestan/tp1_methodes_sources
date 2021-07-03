@@ -18,14 +18,19 @@ Vous allez maintenant mettre en oeuvre l'utilisation de l'écart normalisé et d
 
 +++
 
-# (TP) Complément : Utilisation d'une régression linéaire.
+# (TP) Utilisation d'une régression linéaire. (1h)
 Cette partie est entièrement libre. Vous allez utiliser la cellule suivante pour réaliser une régression linéaire à partir de la relation $d = c \Delta t$. Vous devrez :
-* Vérifier la compatibilité avec le modèle linéaire
-* Estimer ainsi la célérité et son incertitude au moyen d'une simulation de Monte-Carlo.
+* Vérifier la compatibilité avec le modèle linéaire par régression linéaire et tracé graphique (pensez aux écarts normalisés)
+* Estimer ainsi la célérité et son incertitude au moyen d'une simulation de Monte-Carlo sur la régression linéaire.
 * Comparer la valeur estimée aux attentes.
 
 Pensez à utiliser [l'exemple complet](https://pcsi3physiquestan.github.io/tp_incertitude/notebook/exemple.html) pour écrire le code adéquat.
 
 ```{code-cell}
+"""
+N'oubliez pas d'importer les bibliothèques utiles.
+Vous devez aussi entrer à nouveau les données expérimentales car les notebooks sont indépendants.
+"""
+
 
 ```
