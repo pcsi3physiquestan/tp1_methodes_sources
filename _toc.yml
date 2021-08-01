@@ -1,15 +1,17 @@
-# In _toc.yml
-- file: tp1_methodes
+format: jb-book
+root: tp1_methodes
+parts:
+- caption: Mesure unique
   numbered: true
-
-- part: Mesure unique
   chapters:
   - file: notebook/exo_protocole
   - file: notebook/exo_estimation
-- part: Mesures multiples
+- caption: Mesures multiples
+  numbered: true
   chapters:
   - file: notebook/exo_graphique
   - file: notebook/exo_comparaison
-- part: Complément : Automatisation des mesures
+- caption: "Complément - Automatisation des mesures"
+  numbered: true
   chapters:
   - file: notebook/exo_arduino
