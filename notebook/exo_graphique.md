@@ -78,7 +78,7 @@ Pensez bien :
 * aux légendes du graphiques
 * aux barres d'incertitudes
 
-_On rappelle que les vecteurs contenant les données ont déjà été créé dans la première cellule._
+_On rappelle que les vecteurs contenant les données ont déjà été créé dans la première cellule : `d, ud, dt, udt`._
 
 ```{code-cell}
 """Votre code
@@ -107,21 +107,16 @@ Ecrire alors le compte-rendu de votre analyse.
 ### Travail à faire
 Cette partie va nous amener à estimer la célérité pour chaque couple de mesure. On réalisera ensuite la moyenne des mesures.
 
-Dans cette partie, le script (les partiesà modifier sont clairement explicitées mais il est important de comprendre le reste du code pour être capable de l'écrire soi-même) :
+Dans cette partie, le script (les parties à modifier sont clairement explicitées mais il est important de comprendre le reste du code pour être capable de l'écrire soi-même) :
 1. réalise pour chaque jeu de données une simulation de Monte-Carlo pour estimer la célérité et son incertitude.
     * On simule N = 100000 fois pour chaque jeu de données. Une explication (à comprendre et retenir) sur la méthode est donnée dans le script.
     * Nous sommes dans le cas où on ne connaît pas la distribution associées aux données de vos camarades. On supposera que les distributions pour $\Delta t$ et $d$ sont __gaussiennes__.
 2. (vous) estime la célérité par une moyenne de tous les résultats et l'incertitude avec la formule pour une estimation de type A.
 	  * On utilise une moyenne arithmétique pour calculer $c_{mes}$ et son incertitude
-	  * L'estimation de l'incertitude est alors (k est le nombre de mesure de c obtenues):
-
-$$ u(C) = \frac{\sigma(echantillons)}{\sqrt{N}}$$
-
-où $\sigma(echantillons)$ est l'écart-type du vecteur échantillons.
-
+	  * L'estimation de l'incertitude est alors (k est le nombre de mesure de c obtenues): $ u(C) = \frac{\sigma(echantillons)}{\sqrt{k}}$ où $\sigma(echantillons)$ est l'écart-type du vecteur échantillons.
 3. représente sur un graphique chaque valeur de c pour chaque jeu de données avec une barre d'incertitude et la moyenne calculée.
 	  * le numéro des binômes en abscisses (pas d'incertitude là dessus !)
-    * la moyenne par une droite donc par deux points $[0, c_{mes}], [k+1, {c_mes}]$. A vous de voir comment l'implémenter.
+    * la moyenne par une droite donc par deux points $[0, c_{mes}], [k+1, {c_mes}]$.
 4. représente sur un autre graphique les écarts normalisés à la moyenne des mesures pour vérifier la cohérence des mesures entre elles.
 
 ```{code-cell}
@@ -144,7 +139,7 @@ d_sim = rd.normal(d, ud, (N, k))  # Il faut préciser la taille du tableau N lig
 dt_sim = rd.normal(dt, udt, (N, k))
 
 """
-Calcul des c et de pour chaque binomes : moyenne de chaque colonne.
+Calcul des c et de u(c) pour chaque binomes : moyenne de chaque colonne.
 La fonction np.mean possède une option np.mean(..., axis=0) qui permet justement de faire des moyennes que par colonnes.
 
 Même principe pour l'écart-type avec l'utilisation de l'option axis=0
@@ -161,7 +156,7 @@ uc_sim = np.std(c_binomes, ddof=1, axis=0)  # Ecart-type par colonne :on a l'inc
 ---------------------------------------------------------------------------------------
 A VOUS DE CODER
 C'est à vous maintenant de :
-- calculer la moyenne des célérités de chaque binomes
+- calculer la moyenne des célérités estimées précédemment
 - calculer l'incertitude-type sur la célérité au moyen de la formule donnée dans l'énoncé.
 N'hésitez pas à afficher les variables c_sim et uc_sim pour voir leur contenu.
 """
@@ -177,13 +172,12 @@ FIN DE LA PARTIE A MODIFIER
 """
 
 """
+PARTIE DEJA ECRITE
 ---------------------------------------------------------------------------------------
 Tracé graphique
 On montre comment tracer les valeurs de célérité avec leurs incertitude et les écarts normalisés dans la même fenêtre.
 
-Seule nouveauté, le tracé de la valeur moyenne. Voici l'instruction (ax représente les axes):
-ax.plot([0, k+1], [c0, c0], color='red', label="Moyenne des mesures")
-où c0 est la variable contenant la valeur de la célérité estimée par moyenne.
+Seule nouveauté, le tracé de la valeur moyenne. Voici l'instruction (ax représente les axes).
 """
 f, ax = plt.subplots(1, 2, figsize=(9, 6))  # Fenêtre graphique avec deux zones de tracé.
 f.suptitle('')  # Donner un titre au graphique

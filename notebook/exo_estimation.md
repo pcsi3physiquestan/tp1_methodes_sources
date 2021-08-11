@@ -220,10 +220,10 @@ Grâce aux valeurs affichés précédemment, rendre-compte dans votre compte-ren
 
 Forme à donner :
 
-$$t_1 = ... \pm ...$$
-$$t_2 = ... \pm ...$$
-$$d_1 = ... \pm ...$$
-$$d_2 = ... \pm ...$$
+$$t_1 = ... \pm ...\rm{Unité}$$
+$$t_2 = ... \pm ...\rm{Unité}$$
+$$d_1 = ... \pm ...\rm{Unité}$$
+$$d_2 = ... \pm ...\rm{Unité}$$
 
 +++
 
@@ -235,7 +235,7 @@ Vous devez utiliser les résultats précédents pour obtenir une estimation de l
 
 Il n'est pas utile de refaire toute la simulation. Vous disposez déjà de N échantillon simulés pour $t_1,t_2, d_1, d_2$ (`t1_sim, t2_sim, d1_sim, d2_sim`). Vous allez devoir:
 1. Créer deux vecteurs `dt_sim` et `D_sim` correspondent aux N simulations de tirages pour la durée de vol et la distance E-R
-2. Créer un vecteur `c_sim` contenantles N simulations des valeurs de la célérité du son
+2. Créer un vecteur `c_sim` contenant les N simulations des valeurs de la célérité du son
 3. Obtenir la moyenne `cm` et l'écart-type `uc` du vecteur `c_sim`.
 4. Tracer l'histogramme des valeurs simulés de la célérité `c`.
 </font>
@@ -264,7 +264,13 @@ cm = 0
 uc = 0
 
 """
-Les lignes ci-dessous afficheront les résultats attention aux noms de variables
+Tracé graphique
+Pensez bien à créer la fenêtre graphique, la titrer et légender les axes
+"""
+
+"""
+Les lignes ci-dessous afficheront les résultats sans tenir compte des chiffres significatifs
+attention aux noms de variables
 """
 print("c = ", cm)
 print("uc = ", uc)
@@ -277,7 +283,7 @@ L'affichage précédent n'est pas acceptable car :
 
 __Un résultat de mesure unique avec incertitude doit s'écrire sous la forme :__
 $$
-G = (G_{mes} \pm u(G)) Unités
+G = (G_{mes} \pm u(G)) \rm{Unités}
 $$
 
 Vous devez respectez les contraintes suivantes :
@@ -287,7 +293,7 @@ Vous devez respectez les contraintes suivantes :
 Rendre-compte de votre résultat de mesure.
 
 $$
-c = (Résultat de mesurage \pm Incertitude) (Facultatif: \times Puissance de 10) Unité
+c = (Resultat de mesurage \pm Incertitude) (Facultatif: \times Puissance de 10) \rm{Unité}
 $$
 
 +++
@@ -303,8 +309,8 @@ autour de la température ambiante où $\theta$ est la température en __Celsius
 
 _(Robert N. Compton et Michael A. Duncan, Laser Experiments for Chemistry and Physics)_
 
-1. Ecrire une fonction cel_T(T) qui prend comme argument un flottant (température T) et qui renvoie un flottant : la célérité(en m/s)
-2. Calculer l'écart normalisé entre la célérité estimée par votre mesure et celle donnée par la littérature (par manque d'information, on considèrera que cette valeur n'a pas d'incertitude). Conclure quant à la compatibilité entre votre expérience et le modèle proposé.
+> 1. Ecrire une fonction `cel_T(T)` qui prend comme argument un flottant (température T) et qui renvoie un flottant : la célérité(en m/s)
+> 2. Calculer l'écart normalisé entre la célérité estimée par votre mesure et celle donnée par la littérature (par manque d'information, on considèrera que cette valeur n'a pas d'incertitude). Conclure quant à la compatibilité entre votre expérience et le modèle proposé.
 
 ```{code-cell}
 def cel_T(T):
@@ -318,4 +324,6 @@ print(en)
 
 ```
 
-
+````{important} 
+Que ce soit ici en codant sous Python ou par écrit en analysant un ensemble de résultats ou une courbe, l'exploitation n'est JAMAIS automatique et demande TOUJOURS de réfléchir en détail à vos résultats.
+````
