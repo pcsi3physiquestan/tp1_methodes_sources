@@ -55,10 +55,10 @@ import pandas as pd
 
 donnees = pd.DataFrame(
     {
-        "d(cm)": ["{:.2g}".format(val) for val in d],  # On arrondi à 10^(-2) pour avoir la même précision que pour l'incertitude
-        "u(d)(cm)": ["{:.2g}".format(val) for val in ud],  #On garde deux chiffres significatifs sur l'incertitude
-        "Delta t(ms)": ["{:.2g}".format(val) for val in dt],  # Même principe
-        "u(Delta t)(ms)": ["{:.2g}".format(val) for val in udt]  # Même principe, il y a juste un problème pour 10
+        "d(cm)": ["{:.2f}".format(val) for val in d],  # On arrondi à 10^(-2) pour avoir la même précision que pour l'incertitude
+        "u(d)(cm)": ["{:.2f}".format(val) for val in ud],  #On garde deux chiffres significatifs sur l'incertitude
+        "Delta t(ms)": ["{:.1f}".format(val) for val in dt],  # Même principe
+        "u(Delta t)(ms)": ["{:.1f}".format(val) for val in udt]  # Même principe, il y a juste un problème pour 10
     }
 )
 
