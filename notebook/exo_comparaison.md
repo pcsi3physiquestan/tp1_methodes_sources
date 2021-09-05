@@ -52,7 +52,9 @@ Commencez par tracer un graphique approprié pour vérifier à l'oeil si le mod�
 
 
 
+```
 
+```{code-cell}
 """
 ------- AJUSTEMENT LINEAIRE -----------
 Vous devez réaliser un ajustement linéaire et en déduire une valeur des paramètres
@@ -78,7 +80,9 @@ n_bin = len(d)  # Nombre de binômes
 
 
 
+```
 
+```{code-cell}
 """
 ------- TEST DE COMPATIBILITE DU MODELE -----------
 1. Vérifier par un tracé graphique que la droite ajustée passe par les croix d'incertitude
@@ -87,7 +91,9 @@ les valeurs expérimentales et les valeurs ajustées sont inférieurs à 2
 """
 
 
+```
 
+```{code-cell}
 """
 ------- TEST DE COMPATIBILITE DE C -----------
 Vérifier par un calcul d'écart normalisé que la valeur estimée de la célérité
