@@ -37,6 +37,7 @@ L'[emetteur ultrason](emetteur) est un boitier créant lui même le signal élec
 ```{figure} ./images/emetteur.jpg
 :name: emetteur
 :align: center
+:width: 50%
 Emetteur ultrasons
 ```
 
