@@ -80,7 +80,7 @@ n_bin = len(d)  # Nombre de binômes
 
 
 """
-------- TEST DE COMPATIBILITE DU MODEL -----------
+------- TEST DE COMPATIBILITE DU MODELE -----------
 1. Vérifier par un tracé graphique que la droite ajustée passe par les croix d'incertitude
 2. Vérifier par un tracé graphique que tous les écarts normalisés entre
 les valeurs expérimentales et les valeurs ajustées sont inférieurs à 2
