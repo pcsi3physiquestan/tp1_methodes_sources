@@ -29,9 +29,11 @@ Pensez à utiliser [l'exemple complet](https://pcsi3physiquestan.github.io/tp_in
 ```{code-cell}
 """
 ------- MODULES UTILES -----------
-N'oubliez pas d'importer les bibliothèques utiles. Toutes ne sont pas importées.
+Les bibliothèques utiles sont déjà importées.
 """
 import numpy as np
+import matplotlib.pyplot as plt
+import numpy.random as rd
 
 """
 ------- DONNEES EXPERIMENTALES -----------
@@ -45,14 +47,21 @@ udt = np.array([5.4, 5.8, 4.6, 6.3, 8.3, 10, 5.1, 3.2])  # Liste des incertitude
 
 """
 ------- LOI COMPATIBLE A L'OEIL -----------
-Commencez par tracer un graphique approprié pour vérifier à l'oeil si le modèle attendue est possible.
+Le tracé a déjà été réalisé précédemment. On donne cette fois le code
 """
+f, ax = plt.subplots()
+f.suptitle('Etude de la célérité du son')
+ax.set_xlabel("Distance cm)")
+ax.set_ylabel("Temps de vole (ms)")
 
+ax.errorbar(d, dt, xerr=ud, yerr=udt, label="Données expérimentales", marker="+", linestyle="", color="black")
 
-
-
-
+ax.grid()
+ax.legend()
+plt.show()
 ```
+_Vérifiez que l'hypothèse d'une loi linéaire est plausible._
+
 
 ```{code-cell}
 """
@@ -70,10 +79,6 @@ pour avoir les valeurs estimées et leur incertitude.
 """
 N = 10000
 n_bin = len(d)  # Nombre de binômes
-
-
-
-
 
 
 
