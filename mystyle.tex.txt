@@ -1,0 +1,20 @@
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+\tcbuselibrary{breakable}
+%\usepackage{comment}
+\usepackage{environ}
+\NewEnviron{hide}{}
+\newtcolorbox{attentionbox}[1]{colback=red!5!white,colframe=red!75!black,fonttitle=\bfseries,title={#1},breakable}
+\newtcbtheorem[number within=chapter]{importantbox}{Important}{colback=green!5,colframe=green!35!black,fonttitle=\bfseries,breakable}{th}
+\newtcbtheorem[number within=chapter]{notebox}{}{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries,breakable}{sno}
+
+\renewenvironment{sphinxattention}[1]{\begin{attentionbox}{Attention} }{\end{attentionbox}}
+\renewenvironment{sphinximportant}[1]{\begin{importantbox}{}{} }{\end{importantbox}}
+\renewenvironment{sphinxnote}[1]{\begin{notebox}{#1}{} }{\end{notebox}}
+
+%\renewenvironment{sphinxShadowBox}{}{}
+%\excludecomment{sphinxShadowBox}
+\let\sphinxShadowBox\hide
+\let\endsphinxShadowBox\endhide
+
+\setcounter{secnumdepth}{4}

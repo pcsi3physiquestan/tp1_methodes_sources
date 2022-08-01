@@ -35,7 +35,9 @@ Pour pouvoir tester votre code, des données expérimentales __fictives__ sont e
 En TP, vous récupérerez l'ensemble des données de mesure des différents binômes et modifierez ces listes.
 
 ```{code-cell}
+:tags: [remove-output, hide-input]
 import numpy as np  # Pensez à l'alias de la bibliothèques numpy pour la suite.
+import matplotlib.pyplot as plt
 """Données expérimentales
 
 Pensez à entre les 4 listes dans le même ordre.
@@ -46,24 +48,6 @@ dt = np.array([30, 60, 90, 120, 150, 180, 210, 240])  # Liste des temps de vol (
 udt = np.array([5.4, 5.8, 4.6, 6.3, 8.3, 10, 5.1, 3.2])  # Liste des incertitudes sur Delta t
 ```
 
-La syntaxe et les fonctions de la cellule ci-dessous ne sont pas à connaître. Vous verrez simplement une façon
-d'afficher de manière esthétique le tableau des mesures.
-Observez surtout le choix des arrondis dans les commentaires (il y a un problème pour le 10 de udt).
-
-```{code-cell}
-import pandas as pd
-
-donnees = pd.DataFrame(
-    {
-        "d(cm)": ["{:.2f}".format(val) for val in d],  # On arrondi à 10^(-2) pour avoir la même précision que pour l'incertitude
-        "u(d)(cm)": ["{:.2f}".format(val) for val in ud],  #On garde deux chiffres significatifs sur l'incertitude
-        "Delta t(ms)": ["{:.1f}".format(val) for val in dt],  # Même principe
-        "u(Delta t)(ms)": ["{:.1f}".format(val) for val in udt]  # Même principe, il y a juste un problème pour 10
-    }
-)
-
-donnees.style
-```
 
 ### C'est à vous.
 
@@ -74,17 +58,24 @@ C'est à vous de coder maintenant la cellule suivante est entièrement à votre 
 le graphique représentant $\Delta t$ en fonction $d$.
 
 Pensez bien :
-* aux bibliothèques utiles
 * aux légendes du graphiques
 * aux barres d'incertitudes
 
-_On rappelle que les vecteurs contenant les données ont déjà été créé dans la première cellule : `d, ud, dt, udt`._
+_On rappelle que les vecteurs contenant les données ont déjà été créé dans la première cellule : `d, ud, dt, udt`. Pensez à utiliser le [modèle](https://pcsi3physiquestan.github.io/intro_python/notebook/plt_presentation.html#un-exemple-basique)._
 
 ```{code-cell}
+:tags: [remove-output, hide-input]
 """Votre code
 
 A vous de coder le graphique à tracer.
 """
+# Créer la fenêtre graphique avec subplots
+
+# Donner un titre (f.suptitle) et des légendes (ax.set_xlabel et ax.set_ylabel)
+
+# Tracer la courbe Delta t (D) avec errorbar
+
+# Afficher une grille (ax.grid) et afficher le graphique (plt.show)
 ```
 
 #### Première analyse des données.
@@ -120,6 +111,7 @@ Dans cette partie, le script (les parties à modifier sont clairement explicité
 4. représente sur un autre graphique les écarts normalisés à la moyenne des mesures pour vérifier la cohérence des mesures entre elles.
 
 ```{code-cell}
+:tags: [remove-output, hide-input]
 """ PARTIE DEJA ECRITE"""
 """On importe pour vous la bibliothèque random 
 et la bibliothèque matplotlib.pyplot

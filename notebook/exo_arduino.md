@@ -45,6 +45,7 @@ Utiliser la cellules ci-dessous pour :
 4. Déterminer alors la célérité associée à chaque temps de vol puis la célérité moyenne et son écart-type. Comparer cette valeur à la valeur attendue.
 
 ```{code-cell}
+:tags: [remove-output, hide-input]
 """
 N'oubliez pas d'importer les bibliothèques utiles.
 """

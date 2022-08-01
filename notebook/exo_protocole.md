@@ -55,6 +55,7 @@ Rédiger par écrit le protocole expérimental. __N'oubliez pas un schéma de vo
 
 +++
 
+(exemple_proto)=
 ### Exemple de réponse
 __Après__ avoir réfléchi au protocole, vous pouvez afficher une proposition de protocole (_croix à droite_).
 
@@ -83,6 +84,11 @@ __Remarques:__
 On réfléchira à la raison d'utiliser le temps entre deux récepteurs et non entre l'émetteur et un récepteur.
 ```
 
+````{admonition} Exercice préliminaire
+:class: hint
+1. Quelle durée d'acquisition choisir pour observer deux salves courtes sur les signaux des 2 récepteurs? _(La règle ne dépasse pas 1 mètre et la célérité du son est de l'ordre de 350m/s)_
+2. Le rail permet des mesures de distance entre 0 et 550mm. Echanger avec l'ensemble des binômes pour que chacun des 12 groupes fasse une mesure de célérité pour une distance différente.
+````
 +++
 
 ## Analyse des mesurandes directs.

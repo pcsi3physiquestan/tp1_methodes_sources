@@ -79,7 +79,13 @@ latex:
 
 #######################################################################################
 # Advanced and power-user settings
-#sphinx:
+sphinx:
 #  extra_extensions          :   # A list of extra extensions to load by Sphinx (added to those already used by JB).
 #  local_extensions          :   # A list of local extensions to load by sphinx specified by "name: path" items
-#  config                    :   # key-value pairs to directly over-ride the Sphinx configuration
+  config                    :   # key-value pairs to directly over-ride the Sphinx configuration
+    latex_show_pagerefs: true
+    latex_show_urls: footnote
+    latex_additional_files: ["mystyle.tex.txt"]
+    latex_elements:
+      preamble: "\\input{mystyle.tex.txt}"
+      sphinxsetup: "verbatimwithframe=false, VerbatimColor={rgb}{0.96,0.96,0.96}"

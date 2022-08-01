@@ -1,0 +1,61 @@
+%!TEX root = optique.tex
+%----------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------
+\documentclass[11pt,french,landscape]{article}
+% Création des en-têtes et pieds de page
+\RequirePackage{calc} % Evaluer des expressions mathématiques
+\RequirePackage{ifthen} % Pour traiter des conditions (pour gérer le prof/eleves)
+\RequirePackage{amsmath,amssymb,amsfonts,amsthm,mathtools} % Ensembles d'outils pour les expressions mathematiques
+\RequirePackage[usenames,dvipsnames]{xcolor} % Utilisation des couleurs (64)
+\RequirePackage[many]{tcolorbox} % Création de box et théorèmes encadrés. Charge d'autres packages
+\RequirePackage{enumitem} %Gestion des liste
+\RequirePackage{stmaryrd}
+
+% Packages: pour la mise en page
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry} % Pour la mise en page. On pourrait la diminuer
+% Packages: pour les tableaux
+\usepackage{array}%Pour les largeurs de colonnes
+\usepackage{booktabs} % Pour les lignes
+\usepackage{multirow} % Fusion de lignes
+
+% Packages: Mise en forme du texte
+\usepackage[utf8]{inputenc} % Les fichiers doivent etre ecrits en UTF-8
+\usepackage[T1]{fontenc} % Pour les césures et autre
+\usepackage{lmodern} % Pack de polices
+\usepackage{babel} % Prise en compte des accents et autres - Le francais est mis en en-tete
+\usepackage{microtype}% Pour une précision dans l'affichage
+
+
+\begin{document}
+\fbox{
+\begin{minipage}{0.9\textwidth}
+\centering
+Compétences en optique
+\end{minipage}
+}
+
+\begin{tabular}{|l|c|c|c|c|}
+\toprule
+ & Pas du tout & Connaissance & Cas simple & Maîtrise\\
+\toprule
+Déterminer rapidement le caractère divergent ou convergent d'une lentille & & & & \\
+\midrule
+Mesurer la distance focale d'une lentille & & & & \\
+\midrule
+Utiliser un viseur pour mesure des distances relatives & & & & \\
+\midrule
+Régler une lunette afocale & & & & \\
+\midrule
+Régler un collimateur & & & & \\
+\midrule
+Construire un collimateur & & & & \\
+\midrule
+Faire une mesure de grandissement & & & & \\
+\midrule
+Utiliser des relations de l'optique géométrique pour mettre en place un protocole & & & & \\
+\bottomrule
+\end{tabular}
+
+
+\end{document}
+
