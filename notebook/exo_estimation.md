@@ -69,47 +69,25 @@ Rendre compte :
 * des différentes sources d'incertitude avec leur estimation si elles sont non négligeables
 +++
 
-## Combinaison des incertitudes. Simulation de Monte-Carlo.
+## Estimation de la célérité.
 
-Vous allez devoir :
-1. Ecrire une série d'instructions qui simule le tirage de chaque sources d'incertitudes N fois (N = 1000000)
-2. Combiner ces sources d'incertitudes pour obtenir les distributions des grandeurs $t_1, t_2, d_1$
- et $d_2$
-4. Estimer l'incertitude-type sur chaque grandeur et le résultat de mesurage pour chaque grandeur.
-3. Représenter graphiquement les histogrammes des distributions pour les 4 grandeurs. Commenter leur allure
-
-Compléter la cellule de code ci-dessous et exécutez là.
+### Estimation simple
+Vous aller devoir utiliser la cellule suivante pour déterminer la célérité. On ne s'occupe pas pour l'instant de déterminer son incertitude.
 
 ```{code-cell}
-:tags: [remove-output, hide-input]
-import matplotlib.pyplot as plt
+:tags: [remove-output,hide-input]
 """
 Vous devez commencer par importer les bibliothèques utiles :
 - numpy (manipulation de vecteurs de valeurs)
 - numpy.random (simulation de tirages aléatoires)
 - matplotlib.pyplot (tracés graphiques)
-
-Pour cette première fois, nous le faisons pour vous. Faites attention aux alias.
+Elles seront utiles par la suite (pas pour cette cellule).
 """
-import numpy as np
-import numpy.random as rd
-import matplotlib.pyplot as plt
-
+import numpy as np  # Pour le calcul sur un ensemble de valeurs
+import numpy.random as rd  # Pour la création de nombres aléatoires
+import matplotlib.pyplot as plt  # Pour les tracés graphiques
 
 """
-Créer maintenant, pour chaque source d'incertitude un vecteur de taille N simulant chaque sources d'incertitudes.
-On rappelle :
-- qu'il faut centrer les distributions sur 0. Vous ajouterez ensuite le résultat de mesurage.
-- pour une distribution normale d'espérance m et d'écart-type s, la fonction à utiliser est rd.normal(m, s, N)
-- pour une distribution uniforme entre a et b, la fonction à utiliser est rd.uniform(a, b, N)
-ATTENTION : Le "rd" ne fonctionne que parce que (vous) avez importé la bibliothèque numpy.random avec l'alias "rd".
-
-On a mis un exemple pour t1 en supposant deux sources d'incertitudes.
-
-Chez vous, simulez un nombre de sources d'incertitude faible 
-pour chaque mesurande avec des valeurs arbitraires (mais pas trop!).
-Vous pourrez ainsi tester le reste de votre script.
-
 Il faudra bien sûr modifier cette partie en TP.
 
 Enregistrer les valeurs mesurées dans des variables t1_m, t2_m, d1_m et d2_m
@@ -120,174 +98,198 @@ t2_m = 0  # Valeur mesurée pour t2
 d1_m = 0  # Valeur mesurée pour d1
 d2_m = 0  # Valeur mesurée pour d2
 
-# t1 --- 
+
+# Estimation de la célérité
+c_m = 0  # Utiliser LES VARIABLES introduites précédemment pour estimer la célérité des ondes.
+
+print("c = " + str(c_m))  # ATTENTION : Les chiffres ne sont évidemment pas tous significatifs.
+```
+### Combinaison des incertitudes. Simulation de Monte-Carlo.
+
+Pour rappel, la méthode de Monte-Carlo consiste:
+* On répète N fois:
+    1. à simuler de nouvelles valeurs des mesurandes directes (_ici $t_1, t_2, d_1, d_2$_) : on réalise, pour chaque source d'incertitude un tirage aléatoire d'une valeur suivant la distribution choisie (ici des distributions __uniformes__ de largeur estimée lors de l'expérience - `numpy.random.uniform(a : float, b :float) -> float`) auquel on ajoute la valeur mesurée (`t1_m, t2_m, d1_m, d2_m`).
+    2. à déterminer une nouvelle valeur simulée du mesurandes indirect recherché (_ici $c$_) et stocker cette valeur dans une liste prévue au préalable.
+* On obtient ainsi une liste de N valeurs de $c$ simulées à partir des tirages aléatoires. On peut donc calculer des grandeurs statistiques. On calculera ainsi:
+    1. L'écart-type (`numpy.std(liste_val : list, ddof=1) -> float`)de la liste de valeurs et __on considèrera cet ecart-type comme étant l'incertitude sur $c$.__
+
+
+#### Monte-Carlo : Méthode 1
+La première méthode est la plus simple à comprendre et à mettre en oeuvre. Elle présente par contre le plus long temps d'exécution.
+
+_Note: La ligne %time permet simplement d'afficher le temps de calcul de la cellule entière._
+
+```{code-cell}
+:tags: [remove-output, hide-input]
+%time
 """
-S'il y a moins de sources d'incertitude, supprimez en.
-S'il y a plus de sources d'incertitude, ajoutez en en vous aidant du modèle.
+Il faut d'abord rentrer les DEMIE-LARGEURS des distributions pour chaque sources d'incertitude de chaque grandeur.
+- S'il y a moins de sources d'incertitude, supprimez en.
+- S'il y a plus de sources d'incertitude, ajoutez en en vous aidant du modèle.
 """
-t1_u1u = 0.3  # Ecart-type de la première source d'incertitude de t1
-t1_u2u = 0.1  # Ecart-type de la deuxième source d'incertitude de t1
-t1_u1 = rd.uniform(-t1_u1u, t1_u1u, N)  # Distribution uniforme
-t1_u2 = rd.uniform(-t1_u2u, t1_u2u, N)  # Distribution uniforme
+# Incertitudes estimées
+# sur t1 --- 
+t1_u1u = 0.3  # Demie-largeur de la première source d'incertitude de t1
+t1_u2u = 0.1  # Demie-largeur de la deuxième source d'incertitude de t1
 
-# t2 ---
+# sur t2 ---
 
-# d1 ---
 
-# d2 ---
+
+# sur  d1 ---
+
+
+
+# sur d2 ---
+
+
+
+# INITIALISATION
+N = 100000  # Nombre de simulations réalisées.
+c_sim = []  # Liste vide où on va stocker les valeurs
+
+for i in range(N):
+    """
+    On reprend le même code que pour calculer une valeur de c.
+    Sauf que les valeur de t1, t2, ... sont légèrement modifiées par un tirage aléatoires
+    pour CHAQUE sources d'incertitudes.
+    """
+    # MODIFIER ces lignes en fonction du nombre de sources d'incertitudes estimées précédemment.
+    t1_sim = t1_m + rd.uniform(-t1_u1u, t1_u1u) + rd.uniform(-t1_u2u, t1_u2u)
+    t2_sim = t2_m
+    d1_sim = d1_m
+    d2_sim = d2_m 
+
+    c = 0 # A modifier en le calcul comme précédemment (mais avec les t1_sim,...)
+
+    c_sim.append(c)  # On stocke la valeur simulées
 
 """
-Déterminer la distribution statistique pour t1, t2, d1 et d2.
-On oubliera pas d'ajouter le résultat de mesurage pour centrer ces grandeurs sur leur valeur mesurée.
-
-Exemple de code :
-t1_sim = t1_m + ut11 + ut12
-si t1_m est le résultat de mesurage et ut11, ut12 les vecteurs simulés
-ATTENTION : Ne PAS changer les noms des variables t1_sim...
-car elles seront utilisées pour le tracés des histogrammes.
-
-On donne à nouveau l'exemple pour t1
+Estimation de l'incertitude de mesure
 """
-t1_sim = t1_m + t1_u1 + t1_u2
-t2_sim = 0
-d1_sim = 0
-d2_sim = 0
+c_u = np.std(c_sim, ddof=1)
+
+print("u(c) = " + str(c_u))
+```
+
+#### Monte-Carlo : Méthode 2
+La deuxième méthode conserve l'idée de l'itération précédente mais elle va créer les N valeurs simulées des mesurandes directes (_ici $t_1, t_2, d_1, d_2$_) d'un seul coup AVANT la boucle. On ira piocher dans les listes ainsi créées. L'avantage est que la création des N valeurs est beaucoup plus rapide. Il suffit de rajouter un troisième argument optionnel : `numpy.random.uniform(a: float, b: float, N: int) -> ndarray`. On obtient alors un _vecteur numpy_ (`ndarray`) et non une seule valeur.
+
+```{code-cell}
+:tags: [remove-output, hide-input]
+%time
+"""
+Il n'est pas utile de redéfinir les incertitudes t1_u1u...
+Si vous avez exécuté le bloc précédent, elles sont en mémoire.
+"""
+
+# INITIALISATION
+N = 100000  # Nombre de simulations réalisées.
+c_sim = []  # Liste vide où on va stocker les valeurs
+
+# On simule ici N valeurs d'un seul coup pour chaque mesurandes directs.
+# MODIFIER les différentes lignes pour l'adapter aux exemples ici.
+t1_sims = t1_m + rd.uniform(-t1_u1u, t1_u1u, N) + rd.uniform(-t1_u2u, t1_u2u, N)
+t2_sims = t2_m
+d1_sims = d1_m
+d2_sims = d2_m 
+
+for i in range(N):
+    """
+    On reprend le même code que pour calculer une valeur de c.
+    Sauf qu'on ne refait par le tirage aléatoire, on pioche juste dans les valeurs déjà simulées.
+    """
+    # MODIFIER ces lignes en vous aidant de la première.
+    t1_sim = t1_sims[i]
+    t2_sim = t2_m
+    d1_sim = d1_m
+    d2_sim = d2_m 
+
+    c = 0 # A modifier en le calcul comme précédemment (mais avec les t1_sim,...)
+
+    c_sim.append(c)  # On stocke la valeur simulées
+
+"""
+Estimation de l'incertitude de mesure
+"""
+c_u = np.std(c_sim, ddof=1)
+
+print("u(c) = " + str(c_u))
+```
+
+#### Monte-Carlo : Méthode 3
+On peut encore gagner du temps en utilisant la __vectorialisation__. En effet, les opérations pour obtenir $c$ (soustractions et division) peut s'appliquer __directement entre deux vecteurs numpy terme à terme.__
+
+```{code-cell}
+:tags: [remove-output, hide-input]
+%time
+"""
+Il n'est pas utile de redéfinir les incertitudes t1_u1u...
+Si vous avez exécuté le bloc précédent, elles sont en mémoire.
+"""
 
 
+
+# INITIALISATION
+N = 100000  # Nombre de simulations réalisées.
+c_sim = []  # Liste vide où on va stocker les valeurs
+
+# On simule ici N valeurs d'un seul coup pour chaque mesurandes directs.
+# MODIFIER les différentes lignes pour l'adapter aux exemples ici.
+t1_sims = t1_m + rd.uniform(-t1_u1u, t1_u1u, N) + rd.uniform(-t1_u2u, t1_u2u, N)
+t2_sims = t2_m
+d1_sims = d1_m
+d2_sims = d2_m 
+
+# MODIFIER la ligne ci après en utilisant t1_sims, t2_sims... comme si c'était de simple flottants.
+# Comme ce sont des vecteurs numpy, la vectorialisation appliquera la relation mathématiques terme à terme : c_sim est un vecteur.
+c_sim = 0
+print(type(c_sim))  # Observer en sortie que c_sim est bien un vecteur de taille N
 
 
 """
-Déterminer l'incertitude-type pour chaque mesurande t1, t2, d1 et d2
-On rappelle la fonction std(X, ddof=1) qui calculer l'écart-type des éléments du vecteur X.
-ATTENTION, cette fonction fait partie de la bibliothèque numpy
-Pour l'affichage :
-Enregistrer les incertitude-type dans des variables t1_u, t2_u, d1_u et d2_u.
+Estimation de l'incertitude de mesure
 """
-t1_u = np.std(t1_sim, ddof=1)  # Ecart-type pour les échantillons simulés contenus dans t1_sim
+c_u = np.std(c_sim, ddof=1)
+
+print("u(c) = " + str(c_u))
+```
+
+Cette dernière méthode, BEAUCOUP PLUS RAPIDE,  peut s'appliquer tant que les opérations mises en jeu sont vectorialisables par numpy soit:
+* `+,-,/,*`
+* les fonctions usuelles `numpy.sin, numpy.cos, numpy.tan, numpy.log, numpy.exp...` __à condition qu'elle proviennent de la bibliothèqe numpy et non la bibliothèque math.__
+
+Exception notoire:
+* `numpy.polyfit` qui permet de faire des régression linéaire n'est pas vectorialisable.
+
+#### Autre avantage des méthodes 2 et 3
+On obtient par ces méthodes une liste (vecteur pour être précis) de valeurs simulées aussi pour $t_1, t_2...$^. On peut donc aussi calculer l'incertitude-type pour ces grandeurs et donc en rendre-compte dans son compte-rendu. Ici:
+
+```{code-cell}
+:tags: [remove-output,hide-input]
+# MODIFIER les lignes suivantes en s'inspirant de la première
+t1_u = np.std(t1_sims, ddof=1)  # Incertitude sur t1
 t2_u = 0
 d1_u = 0
 d2_u = 0
 
 
-"""
-Les lignes ci-dessous vous donneront les résultats des estimations des incertitudes-type de mesures.
-ATTENTION : Les chiffres significatifs ne sont pas bons, à vous d'arrondir.
-"""
-print("t1 = ", t1_m)
-print("t2 = ", t2_m)
-print("d1 = ", d1_m)
-print("d2 = ", d2_m)
-print("u(t1) = ", t1_u)
-print("u(t2) = ", t2_u)
-print("u(d1) = ", d1_u)
-print("u(d2) = ", d2_u)
-
-
-"""Tracé graphique
-Les instructions sont données. Vous verrez ainsi comment tracer 4 graphiques 
-dans une même fenêtre.
-A FAIRE : Pensez à changer l'unité des valeurs (légende de l'axe des abscisses suivant vos mesures).
-"""
-
-f, axs = plt.subplots(2, 2, figsize=(9,6), dpi=100)  # Création d'une fenêtre graphique avec 4 axes répartis sur 2 colonnes et 2 lignes.
-f.suptitle("Distribution des mesurandes directs")  # Titre global
-"""
-axs est un tableau contenant les 4 axes (=graphiques)
-
-"""
-
-# Tracé de t1
-axs[0][0].hist(t1_sim, bins='rice', label="t1")
-axs[0][0].set_xlabel("Valeurs (s)")  # Légende de l'axe des abscisses
-axs[0][0].legend()  # Affichage de la légende (pour savoir que c'est t1)
-
-axs[1][0].hist(t2_sim, bins='rice', label="t2")
-axs[1][0].set_xlabel("Valeurs (s)")  # Légende de l'axe des abscisses
-axs[1][0].legend()
-
-axs[0][1].hist(d1_sim, bins='rice', label="d1")
-axs[0][1].set_xlabel("Valeurs (m)")  # Légende de l'axe des abscisses
-axs[0][1].legend()
-
-axs[1][1].hist(d2_sim, bins='rice', label="d2")
-axs[1][1].set_xlabel("Valeurs (m)")  # Légende de l'axe des abscisses
-axs[1][1].legend()
-
-plt.show()
+print("t1 = {} +/- {}".format(t1_m, t1_u))  # Forme pas à connaître mais très utile pour afficher un texte complexe.
+print("t2 = {} +/- {}".format(t2_m, t2_u))
+print("d1 = {} +/- {}".format(d1_m, d1_u))
+print("d2 = {} +/- {}".format(d2_m, d2_u))
+print("c = {} +/- {}".format(c_m, c_u))
 ```
-
-Pour analyser correctement les valeurs des mesurandes directs et leur incertitudes on va les afficher correctement, ce qui implique :
-- de choisir où tronquer l'incertitude de mesure. On prendra l'habitude de ne garder que __2 chiffres significatifs sur l'incertitude-type__.
-- de tronquer le résultat de mesurage en cohérence : sa précision (puissance de 10 du dernier chiffre affiché) doit être la même que l'incertitude-type.
-
-Grâce aux valeurs affichés précédemment, rendre-compte dans votre compte-rendu de la mesure de $t_1, t_2, d_1$ et $d_2$ en choisissant correctement l'arrondi de l'incertitude-type et de la valeur mesurée. __On oubliera pas non plus l'unité.__
-
-Forme à donner :
-
-$$t_1 = ... \pm ...\rm{Unité}$$
-$$t_2 = ... \pm ...\rm{Unité}$$
-$$d_1 = ... \pm ...\rm{Unité}$$
-$$d_2 = ... \pm ...\rm{Unité}$$
-
 +++
 
-## Estimation de la célérité du son. Propagation d'incertitude.
-
-### Votre travail
-
-Vous devez utiliser les résultats précédents pour obtenir une estimation de la célérité du son et de son incertitude de mesure.
-
-Il n'est pas utile de refaire toute la simulation. Vous disposez déjà de N échantillons simulés pour $t_1,t_2, d_1, d_2$ (`t1_sim, t2_sim, d1_sim, d2_sim`). Vous allez devoir:
-1. Créer deux vecteurs `dt_sim` et `D_sim` correspondent aux N simulations de tirages pour la durée de vol et la distance E-R
-2. Créer un vecteur `c_sim` contenant les N simulations des valeurs de la célérité du son
-3. Obtenir la moyenne `cm` et l'écart-type `uc` du vecteur `c_sim`.
-4. Tracer l'histogramme des valeurs simulés de la célérité `c`.
-
-+++
-
-### A vous de coder
-Une bonne partie du code est déjà donnée. Compléter les relations utiles.
-
-```{code-cell}
-:tags: [remove-output, hide-input]
-"""
-Il n'est pas nécessaire de réimporter les bibliothèques puisque vous les avez déjà importés.
-Modifier les formules lorsque c'et nécessaire.
-"""
-dt_sim = t2_sim - t1_sim  # Simulation des temps de vol
-D_sim = 0  # Simulation des distances
-
-c_sim = 0  # Simulation des célérités
-
-cm = 0  # Utiliser la cellule précédente pour calculer la moyenne de la célérité à partir de c_sim
-uc = 0  # Utiliser la cellule précédente pour calculer l'incertitude sur la célérité à partir de c_sim
-
-"""
-Tracé graphique
-Pensez bien à légender les axes
-"""
-f, axs = plt.subplots()  # Création d'une fenêtre graphique avec 4 axes répartis sur 2 colonnes et 2 lignes.
-f.suptitle("Distribution des mesurandes directs")  # Titre global
-axs.set_xlabel("?????")  # Légende de l'axe des abscisses
-
-# Tracé de t1
-axs.hist(c_sim, bins='rice')
-plt.show()
-
-"""
-Les lignes ci-dessous afficheront les résultats sans tenir compte des chiffres significatifs
-attention aux noms de variables
-"""
-print("c = ", cm)
-print("uc = ", uc)
-```
 
 ### Rendez-compte de votre mesure
-L'affichage précédent n'est pas acceptable car :
+L'affichage précédent n'__est pas acceptable__ car :
 * il affiche trop de chiffres
 * il ne donne pas l'unité.
 
 __Un résultat de mesure unique avec incertitude doit s'écrire sous la forme :__
+
 $$
 G = (G_{mes} \pm u(G)) \rm{Unités}
 $$
@@ -315,14 +317,31 @@ autour de la température ambiante où $\theta$ est la température en __Celsius
 
 _(Robert N. Compton et Michael A. Duncan, Laser Experiments for Chemistry and Physics)_
 
-> 1. Ecrire une fonction `cel_T(T)` qui prend comme argument un flottant (température T) et qui renvoie un flottant : la célérité(en m/s)
-> 2. Calculer l'écart normalisé entre la célérité estimée par votre mesure et celle donnée par la littérature (par manque d'information, on considèrera que cette valeur n'a pas d'incertitude (incertitude nulle)). Conclure quant à la compatibilité entre votre expérience et le modèle proposé.
+> 1. Ecrire une fonction `cel_T(T)` qui prend comme argument un flottant (température T) et qui renvoie un flottant : la célérité(en m/s). L'utiliser pour estimer la celérité attendue.
+> 2. Estimer, on moyen d'une simulation Monte-Carlo l'incertitude sur la célérité attendue en supposant que la seule source d'incertitude vient de la mesure de la température.
+> 2. Calculer l'écart normalisé entre la célérité estimée par votre mesure et celle donnée par la littérature. Conclure quant à la compatibilité entre votre expérience et le modèle proposé.
+
+Pour rappel, l'écart-normalisé est:
+
+$$
+EN = \frac{\left\vert c_{exp} - c_{attendue} \right\vert}{\sqrt{u(c_{exp})^2 + u(c_{attendue})^2}}
+$$
 
 ```{code-cell}
 :tags: [remove-output, hide-input]
 def cel_T(T):
     """Fonction renvoie la célérité pour une température T"""
     return True
+
+"""Estimation de c_attendue"""
+
+
+
+
+"""Estimation de l'incertitude sur c_atttendue"""
+
+
+
 
 """Calculer l'écart normalisé."""
 en = 0

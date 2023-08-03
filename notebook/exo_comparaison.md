@@ -26,6 +26,7 @@ Vous allez utiliser les cellules suivantes pour réaliser une régression linéa
 
 Pensez à regarder aussi [l'exemple complet](https://pcsi3physiquestan.github.io/tp_incertitude/notebook/exemple.html) pour comprendre.
 
+## Possibilité d'un modèle linéaire
 ```{code-cell}
 :tags: [remove-output, hide-input]
 """
@@ -63,6 +64,31 @@ plt.show()
 ```
 _Vérifiez que l'hypothèse d'une loi linéaire est plausible._
 
+## Ajustement linéaire
+### Estimation de c
+On réalise un ajustement linéaire simple pour obtenir la pente et donc une estimation de c. Comme $\Delta t$ est plus incertain que $d$, on choisi $\Delta t$ comme ordonnée. On calcule donc $1/c$ qu'on inverse ensuite.
+
+```{code-cell}
+:tags: [hide-output,hide-input]
+par_m = np.polyfit(d, dt, 1)  # Régression linéaire
+c_m = 1 / par_m[0]  # La célérité est l'inverse de la pente
+ordo_m = par_m[1]  # On stocke aussi l'ordonnée à l'origine pour test ultérieur.
+
+print(c_m)
+```
+
+### Incertitude sur c
+On ne peut utiliser la vectorialisation, donc on va utiliser la méthode 2 : on crée les N échantillons simulées d'un coup mais on réalise l'ajustement linéaire puis la détermination de $c$ dans une boucle, on stocke les valeurs et on calcule à la fin l'incertitude.
+
+_Petite nouveauté : On utilise une syntaxe pour `numpy.random.uniform` qui permet de créer d'un seul coup les aleurs simulées pour TOUS les échantillons et de le stocker dans un tableau de taille (N, k) où k est le nombre de mesures:_
+
+```
+numpy.random.std(a: list/ndarray, b:list/ndarray, size :tuple)
+```
+avec:
+* `a` et les `b` deux listes, ici `-ud` et `ud` (ou `-udt` et `udt`)
+* `size` est un tuple donnant la taille du tableau à remplir (ici `(N, k)` avec `k = len(d)` ou `len(dt)`)
+La ligne `j`du tableau (donc un jeu de valeurs simulées) s'obtiendra par `tableau[j]`.
 
 ```{code-cell}
 :tags: [remove-output, hide-input]
@@ -79,15 +105,15 @@ n_bin = len(d)  # Nombre de binômes
 On crée directement des tableaux de N*k échantillons simulés pour d et dt
 """
 k = len(d)
-d_sim = rd.uniform(-ud, ud, (N, k))
-dt_sim = rd.uniform(-udt, udt, (N, k))
+d_sim = d + rd.uniform(-ud, ud, (N, k))
+dt_sim = dt + rd.uniform(-udt, udt, (N, k))
 
 """ REGRESSIONS LINEAIRES
 Réalisation des N régressions linéaires au moyen d'une boucle
 """
 c_sim = []  # On stockera les célérité dans cette liste.
 ordo_sim = []  # On conserve aussi les ordonnées à l'origine
-for j in range(N): On parcourt les N échantillons
+for j in range(N): # On parcourt les N échantillons
     d_e = d_sim[j]  # Sélection des distances simulées
     dt_e = dt_sim[j]  # Sélection des temps de vol simulés
     par_e = np.polyfit(d_e, dt_e, 1)  # Régression linéaire
@@ -99,9 +125,7 @@ for j in range(N): On parcourt les N échantillons
 """ -------------------------------------------------------
 A VOUS DE CODER : Détermination des valeurs utiles
 """
-c_m = 0  # Ecrire ici l'instruction permettant d'avoir la célérité estimée à partir de c_sim
 c_u = 0  # Ecrire ici l'instruction permettant d'avoir l'incertitude sur la célérité estimée à partir de c_sim
-ordo_m = 0  # Ecrire ici l'instruction permettant d'avoir l'ordonnée à l'origine estimée à partir de ordo_sim
 ordo_u = 0  # Ecrire ici l'instruction permettant d'avoir son incertitude à partir de ordo_sim
 
 """ FIN DE LA PARTIE A MODIER """
@@ -114,7 +138,16 @@ print("u(ordo) =" + str(ordo_u))
 
 ```
 
-_Réfléchir à l'utilisation possible de l'ordonnée à l'origine._
+
+## Vérifier la compatibilité du modèle
+
+Lorsqu'on réalise un ajustement, on DOIT vérifier si cet ajustement est compatible avec les données expérimentales (_pensez qu'on peut mathématiquement n'importe quelle jeu de valeurs, même si elles ne sont pas alignées !_). Il existe deux méthodes :
+* la vérification visuelle par un tracé graphique. __Elle est obligatoire__.
+* le calcul d'écart normalisée pour des tests de cohérences. Il devient nécessaire seulement si la vérification visuelle ne permet pas de conclure.
+Pour s'entrainer, on va faire les deux.
+
+
+
 
 ```{code-cell}
 :tags: [remove-output, hide-input]
@@ -130,7 +163,7 @@ les valeurs expérimentales et les valeurs ajustées sont inférieurs à 2
 f, ax = plt.subplots()
 f.suptitle('Etude de la célérité du son')
 ax.set_xlabel("Distance cm)")
-ax.set_ylabel("Temps de vole (ms)")
+ax.set_ylabel("Temps de vol (ms)")
 
 ax.errorbar(d, dt, xerr=ud, yerr=udt, label="Données expérimentales", marker="+", linestyle="", color="black")
 
@@ -166,7 +199,7 @@ print(en_s)  # Vérifier la compatibilité du modèle.
 """
 ------- TEST DE COMPATIBILITE DE C -----------
 Vérifier par un calcul d'écart normalisé que la valeur estimée de la célérité
-est compatible avec les données théoriques.
+est compatible avec les données théoriques (attention, cel_T est à redéfinir).
 """
 
 ```

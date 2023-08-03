@@ -42,10 +42,10 @@ import matplotlib.pyplot as plt
 
 Pensez à entre les 4 listes dans le même ordre.
 """
-d = np.array([10, 20, 30, 40, 50, 60, 70, 80])  # Liste des distances E-R (en cm - évitez les nombres trop petits)
-ud = np.array([0.15, 0.26, 0.16, 0.26, 0.14, 0.12, 0.41, 0.32])  # Liste des incertitudes sur d
-dt = np.array([30, 60, 90, 120, 150, 180, 210, 240])  # Liste des temps de vol (en ms)
-udt = np.array([5.4, 5.8, 4.6, 6.3, 8.3, 10, 5.1, 3.2])  # Liste des incertitudes sur Delta t
+d = np.array([10, 20, 30])  # Liste des distances E-R (en cm - évitez les nombres trop petits)
+ud = np.array([0.15, 0.26, 0.16])  # Liste des incertitudes sur d
+dt = np.array([30, 60, 90])  # Liste des temps de vol (en ms)
+udt = np.array([5.4, 5.8, 4.6])  # Liste des incertitudes sur Delta t
 ```
 
 
@@ -91,123 +91,117 @@ Ecrire alors le compte-rendu de votre analyse.
 
 
 
-## (Travail) Détermination des valeurs de la célérité
+## (TP) Détermination des valeurs de la célérité
 
+Quand on est face à une série de mesures, il y a deux analyses à réaliser en général:
+* déterminer une mesure basées sur la série. On peut utiliser plusieurs méthodes mais on va ici simplement utiliser un calcul de moyenne des valeurs. On peut alors estimer l'incertitude de mesure comme étant l'incertitude sur la moyenne d'un échantillon.
+* Vérifier (au moins _a posteriori_) que les mesures sont cohérentes entre elles (plus simplement ici avec la moyennes estimées).
 +++
 
-### Travail à faire
-Cette partie va nous amener à estimer la célérité pour chaque couple de mesure. On réalisera ensuite la moyenne des mesures.
+### Estimation de la célérité.
+Cette partie va nous amener:
+1. à estimer la célérité pour chaque couple de mesure. 
+2. à réaliser ensuite la moyenne des mesures. 
+3. à estimer l'incertitude comme pour un étude statistique (Type A):
 
-Dans cette partie, le script (les parties à modifier sont clairement explicitées mais il est important de comprendre le reste du code pour être capable de l'écrire soi-même) :
-1. réalise pour chaque jeu de données une simulation de Monte-Carlo pour estimer la célérité et son incertitude.
-    * On simule N = 100000 fois pour chaque jeu de données. Une explication (à comprendre et retenir) sur la méthode est donnée dans le script.
-    * Nous sommes dans le cas où on ne connaît pas la distribution associées aux données de vos camarades. On supposera que les distributions pour $\Delta t$ et $d$ sont __gaussiennes__.
-2. (vous) estime la célérité par une moyenne de tous les résultats et l'incertitude avec la formule pour une estimation de type A.
-	  * On utilise une moyenne arithmétique pour calculer $c_{mes}$ et son incertitude
-	  * L'estimation de l'incertitude est alors (k est le nombre de mesure de c obtenues): $ u(C) = \frac{\sigma(echantillons)}{\sqrt{k}}$ où $\sigma(echantillons)$ est l'écart-type du vecteur échantillons.
-3. représente sur un graphique chaque valeur de c pour chaque jeu de données avec une barre d'incertitude et la moyenne calculée.
-	  * le numéro des binômes en abscisses (pas d'incertitude là dessus !)
-    * la moyenne par une droite donc par deux points $[0, c_{mes}], [k+1, {c_mes}]$.
-4. représente sur un autre graphique les écarts normalisés à la moyenne des mesures pour vérifier la cohérence des mesures entre elles.
+$$
+u(c_{moy}) = \frac{\sigma(echantillon)}{\sqrt{nombre_echantillons}}
+$$
+où $sigma$ est l'écart-type statistique calculé sur la série de mesures (réelles ici et non simulées !).
+
+Détecter et modifier les lignes lorsque c'est nécessaire.
+
 
 ```{code-cell}
 :tags: [remove-output, hide-input]
-""" PARTIE DEJA ECRITE"""
-"""On importe pour vous la bibliothèque random 
-et la bibliothèque matplotlib.pyplot
 """
-import numpy.random as rd
-import matplotlib.pyplot as plt
+Estimation des celerites pour chaque mesures
+"""
+c_ms = [0] * len(d)  # d et dt sont des vecteurs numpy : pensez à utiliser la vectorialisation.
 
 """
-On vous montre comment créer un tableau de taille N*k
-où chaque colonne simule les tirages d_i du groupe i suivant une distribution choisie.
-Il suffit pour cela d'entrer un vecteur de valeurs pour la moyenne et l'incertitude
-au lieu de rentrer une valeur seule.
+Calculer la célérité moyenne.
+Utiliser la fonction np.mean(vecteur:ndarray) -> float pour calculer une moyenne en une seule ligne.
 """
-N = 100000
-k = len(d)  # Pour obtenir le nombre de mesures réaliser : la taille de la liste d.
-d_sim = rd.normal(d, ud, (N, k))  # Il faut préciser la taille du tableau N lignes et k colonnes
-dt_sim = rd.normal(dt, udt, (N, k))
+c_mean = 0
 
 """
-Calcul des c et de u(c) pour chaque binomes : moyenne de chaque colonne.
-La fonction np.mean possède une option np.mean(..., axis=0) qui permet justement de faire des moyennes que par colonnes.
-
-Même principe pour l'écart-type avec l'utilisation de l'option axis=0
+Calculer l'incertitude sur c_mean en utilisant la relation donnée.
+On rappelle quie l'écart-type se calcule avec la fonction numpy.std(echantillon: ndarray, ddof=1) -> float
 """
-c_binomes = d_sim / dt_sim  # Calcul de c pour chaque échantillons et chaque binomes de TP.
-c_sim = np.mean(c_binomes, axis = 0)  # Moyenne par colonne : on a la célérité de chaque binôme.
-uc_sim = np.std(c_binomes, ddof=1, axis=0)  # Ecart-type par colonne :on a l'incertitude de chaque binôme.
-""" FIN DE LA PARTIE ECRITE
----------------------------------------------------------------------------------------
-"""
+c_u = 0
 
+print("c = {} +/-".format(c_mean, c_u))
+```
 
-"""
----------------------------------------------------------------------------------------
-A VOUS DE CODER
-C'est à vous maintenant de :
-- calculer la moyenne des célérités estimées précédemment
-- calculer l'incertitude-type sur la célérité au moyen de la formule donnée dans l'énoncé.
-N'hésitez pas à afficher les variables c_sim et uc_sim pour voir leur contenu.
-"""
-c0 = 0  # A modifier
-uc0 = 0  # A modifier
+__Rendre compte de la valeur estimée en n'oubliant pas l'unité et la réflexion sur les chiffres significatifs.__
 
-"Calcul des écarts normalisés à la moyenne pour chaque binomes"
-en_binomes = 0  # A modifier
+### Test de cohérence des données.
+Pour tester la cohérence des données, on va tester la cohérence entre la mesure de $c$ pour chaque échantillon et la moyenne précédente. On connait déjà une méthode pour le faire : un calcul d'écart normalisé. Ainsi, on pourra, si nécessaire écarter ou au moins commenter une mesure qui semblerait incohérente.
 
+On possède déjà les mesures des célérités `c_ms`, la célérité moyenne `c_mean` et son incertitude `c_u`, il manque l'incertitude sur mesure unique de célérité. On va reprendre la même méthode que pour la mesure unique de la partie précédente, mais pour gagner du temps, on part directement de $d, u(d), \Delta t, u(\Delta t)$ donnée et on va __utiliser des distributions uniformes.__ Donc:
+1. On boucle sur le nombre d'échantillons:
+    1. On simule N valeurs de $d$ et $\Delta t$ pour le j-ième échantillon et on en déduit N valeurs de c puis son incertitude. (Utiliser la méthode 3 qui est beaucoup plus rapide).
+    2. On stocke l'incertitude obtenue dans une liste `c_us` qu'on aura préalablement initialisée.
+    3. On calculer l'écart-normalisé entre le j-ième échantillon et la moyenne qu'on stocke dans une liste `en_s`
+2. On représente les valeurs des écarts normalisés sur un graphique qu'on analuse ensuite.
+
+```{code-cell}
+:tags: [remove-output,hide-input]
 """
-FIN DE LA PARTIE A MODIFIER
----------------------------------------------------------------------------------------
+A vous de compléter la boucle en vous aidant de ce qui a été fait pour une mesure unique.
 """
 
-"""
-PARTIE DEJA ECRITE
----------------------------------------------------------------------------------------
-Tracé graphique
-On montre comment tracer les valeurs de célérité avec leurs incertitude et les écarts normalisés dans la même fenêtre.
+c_us = []
+en_s = []
+k = len(d)  # Nombre d'échantillons
+for j in range(k):
+    """ Simuler les valeurs de d et dt puis estimer c et l'incertitude"""
 
-Seule nouveauté, le tracé de la valeur moyenne. Voici l'instruction (ax représente les axes).
-"""
-f, ax = plt.subplots(1, 2, figsize=(9, 6))  # Fenêtre graphique avec deux zones de tracé.
-f.suptitle('')  # Donner un titre au graphique
+    c_uj = 0
+    c_us.append(c_uj)
+    """Calculer l ecart normalise a la moyenne"""
+    en_j = 0
+    en_s.append(en_j)
 
-"""Tracé des valeurs de célérité avec incertitude pour chaque groupe"""
-ax[0].set_xlabel('Binôme')
-ax[0].set_ylabel('Célérité(m/s)')
+print(en_s)  # Pour vérifier ce qu'il y a dedans
 
-ax[0].errorbar(np.arange(k), c_sim, yerr=uc_sim, label="Valeurs estimées", marker='+', linestyle='', color='red')
-ax[0].plot([0, k+1], [c0, c0], color='red', label="Moyenne des mesures")
-ax[0].legend()
+"""Tracé eds écart normalisés"""
+f, ax = plt.subplots()
+f.suptitle("Coherence des differentes mesures")
+ax.set_xlabel("Distance (d) (cm)")
+ax.set_ylabel("EN")
 
-"""Tracé des écarts normalisés"""
+ax.plot(d, en_s, marker="+", linestyle="")  # On ne relit pas les points
 
-
-ax[1].set_xlabel('Binôme')
-ax[1].set_ylabel('EN')
-
-ax[1].plot(en_binomes, label="Ecarts normalisés", marker='+', linestyle='', color='blue') 
-ax[1].legend()
-
+ax.grid()
 plt.show()
-"""
-FIN DU TRACE GRAPHIQUE
----------------------------------------------------------------------------------------
-"""
-
-
-
-"""
----------------------------------------------------------------------------------------
-A VOUS DE CODER
-Calcul de l'écart normalisé entre c0 et la valeur données dans la littérature
-"""
-en_c = 0 # A modifier
-print(en_c)
-
 ```
 
 ### Analyse des données
 Réalisez une analyse des valeurs obtenues pour chaque groupe puis de la célérité moyenne en comparaison avec la valeur donnée dans la littérature.
+
+
+### Bonus : Carte de controle
+On pourrait, au lieu de tracer les ecarts normalisés, tracer une carte de controle qu représente les barres d'incertitudes et la moyenne (avec son incertitudes). Cette méthode est plus visuelle mais attention car les impressions ne correspondent pas tout à fait à ce que donne les EN (cf. TP).
+
+```{code-cell}
+:tags: [remove-output,hide-input]
+
+f, ax = plt.subplots()
+f.suptitle("Carte de controle des mesures")
+ax.set_xlabel("Distance (d) (cm)")
+ax.set_ylabel("EN")
+
+# capsize sert à ajouter des barres aux extrémités simplement par esthétisime.
+ax.errorbar(d, c_ms, marker="+", linestyle="", yerr=c_us, capsize=2)  # On ne relit pas les points
+
+print(len([c_mean - c_u] * len(d)))
+ax.plot(d, [c_mean] * len(d))  # Tracé de la moyenne
+ax.plot(d, [c_mean - c_u] * len(d), linestyle=":")  # Valeur basse de l'intervalle associée à l'incertitude sur c_mean
+ax.plot(d, [c_mean + c_u] * len(d), linestyle=":")  # Valeur haute de l'intervalle associée à l'incertitude sur c_mean
+
+
+plt.show()
+
+```
