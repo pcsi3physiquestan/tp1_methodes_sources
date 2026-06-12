@@ -33,17 +33,28 @@ On désire mesurer la célérité des ultrasons dans l'air. On dispose du matér
 #### Emetteur Ultrason
 
 L'[emetteur ultrason](emetteur) est un boitier créant lui même le signal électrique alimentant une cellule piezoélectrique qui émet ainsi un signal ultrason. Il nécessite d'être alimenté par une tension continue de 15V.
-
+`````{grid}
+````{grid-item}
 ```{figure} ./images/emetteur.jpg
 :name: emetteur
 :align: center
 :width: 50%
 Emetteur ultrasons
 ```
+````
+````{grid-item}
+```{figure} ./images/ultrasons_reglage_frequence.png
+:name: frequence_reglage
+:align: center
+:width: 50%
+Réglage de la fréquence
+```
+````
+`````
 
 (carac_ultrason)=
 Les réglages possibles sont :
-* Une molette permet d'ajuster la __fréquence__ (autour de 40kHz) : La cellule piézo-électrique est un filtre passe-bande, il y a donc une fréquence pour laquelle l'émission sera maximale. Cette molette permet de la régler (placer un récepteur juste devant l'émetteur et ajuster la fréquence jusqu'à ce que le signal reçu soit maximal).
+* Une molette permet d'ajuster la __fréquence__ (autour de 40kHz) : La cellule piézo-électrique est un filtre passe-bande, il y a donc une fréquence pour laquelle l'émission sera maximale. Cette molette permet de la régler. Pour ce faire, placer un récepteur juste devant l'émetteur (cf. photo supra) et ajuster la fréquence jusqu'à ce que le signal reçu soit maximal.
 * Passage en émission continu ou par salve. Il existe deux types de salves :
     * salves courtes : durée d'émission de 1ms puis 4ms de silence
     * salves longues : durée d'émission de 6ms puis 4ms de silence

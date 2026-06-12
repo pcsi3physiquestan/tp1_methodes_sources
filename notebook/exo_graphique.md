@@ -28,24 +28,57 @@ La page ci-présente existe en version notebook téléchargeable grâce au bouto
 +++
 
 ### Votre travail
-Vous aller devoir exploiter non plus une mesure de temps de vol pour une distance émetteur-récepteur mais regrouper l'ensemble de résultats de mesure
-des groupes de TP pour affiner votre mesure de la célérité.
+Vous aller devoir exploiter non plus une mesure de temps de vol pour une distance émetteur-récepteur mais regrouper l'ensemble de résultats de mesure des groupes de TP pour affiner votre mesure de la célérité.
 
-Pour pouvoir tester votre code, des données expérimentales __fictives__ sont entrées dans la cellule suivante.
-En TP, vous récupérerez l'ensemble des données de mesure des différents binômes et modifierez ces listes.
+Les données sont importées depuis le fichier que les binômes ont remplis avec leurs résultats. La première cellule dont le fonctionnement n'est pas à comprendre sert à importer ces données et à la stocker dans 4 vecteurs numpy `d, ud, dt, udt`.
+
+__Il est inutile de comprendre cette cellule mais PENSER à MODIFIER la varialbe `groupe`en fonction de votre groupe de TP : "Groupe A" ou "Groupe B".__
 
 ```{code-cell}
 :tags: [remove-output, hide-input]
-import numpy as np  # Pensez à l'alias de la bibliothèques numpy pour la suite.
-import matplotlib.pyplot as plt
-"""Données expérimentales
+""" Importation des données.
+Cette cellule de code sert à importer les données de chaque binômes. Il n'est pas utile de comprendre son fonctionnement ni de savoir refaire ce code. 
 
-Pensez à entre les 4 listes dans le même ordre.
+On retiendra pour la suite :
+- les distances sont stockées dans un array d
+- les incertitudes sur les distances sont stockées dans un array ud
+- les temps de vol sont stockées dans un array du
+- les incertitudes sur les temps de vol sont stockées dans un array udt
+PENSER simplement à MODIFIER la ligne suivante en fonction du groupe qui a TP.
 """
-d = np.array([10, 20, 30])  # Liste des distances E-R (en cm - évitez les nombres trop petits)
-ud = np.array([0.15, 0.26, 0.16])  # Liste des incertitudes sur d
-dt = np.array([30, 60, 90])  # Liste des temps de vol (en ms)
-udt = np.array([5.4, 5.8, 4.6])  # Liste des incertitudes sur Delta t
+groupe = "Groupe Test" # MODIFIER le groupe en fonction: "Groupe A" ou "Groupe B"
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+url = "https://github.com/pcsi3physiquestan/donnees_exp/raw/refs/heads/main/donnees_tp/mesures_ultrasons.xlsx"
+datas = pd.read_excel(url, sheet_name=groupe, index_col="Binômes") # Extraction des données
+
+# Création des array numps basés sur les données
+binomes = []
+d = []
+ud = []
+dt = []
+udt = []
+for binome in datas.index: # On parcourt les données pour éliminer les lignes "Vides"
+    donnees = datas.loc[binome]
+    if not sum(donnees.isna()):
+        binomes.append(binome)
+        d.append(donnees['d(cm)'])
+        ud.append(donnees['u(d) (cm)'])
+        dt.append(donnees['Delta t (ms)'])
+        udt.append(donnees['u(Delta t) (ms)'])
+# Transformations des données en vecteurs numpy
+d = np.array(d)
+ud = np.array(ud)
+dt = np.array(dt)
+udt = np.array(udt)
+
+# Ces lignes servent simplement à afficher les données. Les chiffres affichées NE CORRESPONDENT PAS
+# aux chiffres significatifs.
+datas_traitees = pd.DataFrame(np.transpose([d,ud,dt,udt]), columns=list(datas.columns), index=binomes)
+datas_traitees.style.format()
 ```
 
 
@@ -73,7 +106,7 @@ A vous de coder le graphique à tracer.
 
 # Donner un titre (f.suptitle) et des légendes (ax.set_xlabel et ax.set_ylabel)
 
-# Tracer la courbe Delta t (D) avec errorbar
+# Tracer la courbe Delta t (D) avec ERRORBAR
 
 # Afficher une grille (ax.grid) et afficher le graphique (plt.show)
 ```

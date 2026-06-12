@@ -36,9 +36,8 @@ Le protocole à réaliser est affichable en cliquant sur la croix à droite.
 :align: center
 Titre
 ```
-1. Réaliser le montage en n'oubliant pas d'alimenter l'émetteur et de le régler et en branchant les deux récepteurs sur la console FOXY. Régler l'émetteur en mode salves courtes.
-2. __Brancher un connecteur BNC-fil simple entre l'émetteur et FOXY.__ Ce signal est le signal alimentant l'émetteur (_pas le signal émis_). Il servira à synchroniser l'affichage.
-2. Brancher la console FOXY à l'ordinateur. Une "tablette" simulée s'ouvre. __Choisir généraliste.__
+1. Les branchement ont été réaliser pour vous.
+2. Brancher (alimentation) la console FOXY à l'ordinateur. Une "tablette" simulée s'ouvre. __Choisir généraliste.__
 3. Préparer l'acquisition (`Affichage > Acquisition` _Conseil : décocher l'option "Fermer au lancement de l'acquisition" pour garder cette fenêtre de réglage durant le TP_):
     * Choisir les voies à acquérir (_icone rouge et noir à droite du [mini-graphique](at_scient)_)
         1. Les placer (glisser-déplacer) sur l'axe des ordonnées du petit graphique.
@@ -53,7 +52,7 @@ Titre
         1. Dans l'onglet (Menus de l'horloge) `Synchronisation` choisir la `Voie de synchro` correspondant au signal de l'émetteur.
         2. Choisir une `Niveau` de 1(V) `Croissant`.
     * Vous pouvez maintenant lancer l'acquisition !
-
+4. Réaliser le réglage de la fréquence comme c'est expliqué dans l'[étude préliminaire](carac_ultrason).
 ````
 
 ### Réalisation des mesures - Bilan des incertitudes
@@ -68,6 +67,18 @@ Rendre compte :
 * des résultats de mesurage
 * des différentes sources d'incertitude avec leur estimation si elles sont non négligeables
 +++
+
+```{dropdown} Eléments de correction - Ne lire qu'après avoir réalisé vos mesures.
+Normalement, voici les sources d'incertitudes que vous pouvez trouver :
+* Pour les deux distances $d_1$ et $d_2$ :
+    * La limite de résolution de l'instrument. Ici elle est associée aux graduations (ici au $t_{d,resol} = 1 mm$).
+    * La variabilité associée à la lecture de la mesure : on ne peut dire plus que "la mesure est vraisemblablement entre ces deux valeurs". Le coin arrondi donne ici un intervale $\Delta d$ entre les valeurs $d_{1min}$ et $d_{1max}$.
+        * Normalement, ces deux sources sont distinctes mais pour simplifier, on les considérera ensemble en prenant l'intervalle maximale tenant compte de la résolution ET de la variabilité de la lecture.
+    * La variabilité des positions des gravures des graduations (à la fabrication, on parle donc d'incertitude "constructeur"): dans le cas des instruments graduées on la considère souvent comme négligeable à notre niveau.
+* Pour les deux temps $t_1$ et $t_2$ :
+    * On a aussi une résolution (associée au nombre de chiffres affichées) et une incertitude de "lecture": elle est associée à l'imprécision sur la position du curseur de mesure à choisir pour repérer le maximum (ou le début du front d'onde suivant le choix de mesure). On regroupe à nouveau les deux, sachant que la premières est clairement négligeables aux vues des valeurs affichées.
+    * Il y a aussi une incertitude "constructeur". Celle-ci n'est pas toujours négligeable pour un instrument à affichage digital. Néanmoins, celle-ci n'est pas donnée ici et aux vues de valeurs affichées par le constructeur, on peut l'espérer négligeable.
+```
 
 ## Estimation de la célérité.
 
@@ -130,7 +141,6 @@ Il faut d'abord rentrer les DEMIE-LARGEURS des distributions pour chaque sources
 # Incertitudes estimées
 # sur t1 --- 
 t1_u1u = 0.3  # Demie-largeur de la première source d'incertitude de t1
-t1_u2u = 0.1  # Demie-largeur de la deuxième source d'incertitude de t1
 
 # sur t2 ---
 
@@ -155,7 +165,7 @@ for i in range(N):
     pour CHAQUE sources d'incertitudes.
     """
     # MODIFIER ces lignes en fonction du nombre de sources d'incertitudes estimées précédemment.
-    t1_sim = t1_m + rd.uniform(-t1_u1u, t1_u1u) + rd.uniform(-t1_u2u, t1_u2u)
+    t1_sim = t1_m + rd.uniform(-t1_u1u, t1_u1u)
     t2_sim = t2_m
     d1_sim = d1_m
     d2_sim = d2_m 
@@ -189,7 +199,7 @@ c_sim = []  # Liste vide où on va stocker les valeurs
 
 # On simule ici N valeurs d'un seul coup pour chaque mesurandes directs.
 # MODIFIER les différentes lignes pour l'adapter aux exemples ici.
-t1_sims = t1_m + rd.uniform(-t1_u1u, t1_u1u, N) + rd.uniform(-t1_u2u, t1_u2u, N)
+t1_sims = t1_m + rd.uniform(-t1_u1u, t1_u1u, N)
 t2_sims = t2_m
 d1_sims = d1_m
 d2_sims = d2_m 
@@ -236,7 +246,7 @@ c_sim = []  # Liste vide où on va stocker les valeurs
 
 # On simule ici N valeurs d'un seul coup pour chaque mesurandes directs.
 # MODIFIER les différentes lignes pour l'adapter aux exemples ici.
-t1_sims = t1_m + rd.uniform(-t1_u1u, t1_u1u, N) + rd.uniform(-t1_u2u, t1_u2u, N)
+t1_sims = t1_m + rd.uniform(-t1_u1u, t1_u1u, N)
 t2_sims = t2_m
 d1_sims = d1_m
 d2_sims = d2_m 
@@ -263,7 +273,7 @@ Exception notoire:
 * `numpy.polyfit` qui permet de faire des régression linéaire n'est pas vectorialisable.
 
 #### Autre avantage des méthodes 2 et 3
-On obtient par ces méthodes une liste (vecteur pour être précis) de valeurs simulées aussi pour $t_1, t_2...$^. On peut donc aussi calculer l'incertitude-type pour ces grandeurs et donc en rendre-compte dans son compte-rendu. Ici:
+On obtient par ces méthodes une liste (vecteur pour être précis) de valeurs simulées aussi pour $t_1, t_2...$ mais aussi $\Delta t$ et $d$. On peut donc aussi calculer l'incertitude-type pour ces grandeurs et donc en rendre-compte dans son compte-rendu. Ici:
 
 ```{code-cell}
 :tags: [remove-output,hide-input]
@@ -279,11 +289,16 @@ print("t2 = {} +/- {}".format(t2_m, t2_u))
 print("d1 = {} +/- {}".format(d1_m, d1_u))
 print("d2 = {} +/- {}".format(d2_m, d2_u))
 print("c = {} +/- {}".format(c_m, c_u))
+
+
+# En vous appuyant sur la méthodes 3, AJOUTER des lignes ci-après pour obtenir l'incertitude
+# sur Delta t et sur d. Pensez à les afficher.
+
 ```
 +++
 
 
-### Rendez-compte de votre mesure
+### Rendez-compte de vos mesures
 L'affichage précédent n'__est pas acceptable__ car :
 * il affiche trop de chiffres
 * il ne donne pas l'unité.
@@ -303,6 +318,7 @@ Rendre-compte de votre résultat de mesure.
 $$
 c = (Resultat de mesurage \pm Incertitude) (Facultatif: \times Puissance de 10) \rm{Unité}
 $$
+Rendre aussi compte des mesures de $t_1, t_2, d_1, d_21,\Delta t$ et $d$.
 
 +++
 
